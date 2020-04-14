@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href=./scripts/bootstrap.min.css
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="./scripts/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <title>LOIS_2</title>
+    </head>
+      <script src="./scripts/scriptWorkWithFormula.js"></script>
+      <script src="./scripts/tableTruth.js"></script>
+      <script src="./scripts/scriptOperation.js"></script>
+      <script src="./scripts/generator.js"></script>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Проверить на равносильность?</h3>
+            <div class="form-group">
+                <label for="outputTypeFormula">Formula1</label>
+                <input type="email" class="form-control" id="outputTypeFormula"/>
+            </div>
+            <div class="form-group">
+                <label for="outputTypeFormula2">Formula2</label>
+                <input type="email" class="form-control" id="outputTypeFormula2"/>
+            </div>
+            <button id="generate" type="submit" onclick="generate()" class="btn btn-primary">
+                Generate
+            </button>
+            <button id="compare" type="submit" onclick="isEquals()" class="btn btn-primary">
+                Compare
+            </button>
+            <button id="equivalent" type="submit" onclick="setAnswer(1)" hidden="true" class="btn btn-primary">
+                Equivalent
+            </button>
+            <button id="nonEquivalent" type="submit" onclick="setAnswer(0)" hidden="true" class="btn btn-primary">
+                Not-Equivalent
+            </button>
+            <button id="startTesting" type="submit" onclick="startTest()" style="background: green" class="btn btn-primary">
+                Start testing
+            </button>
+        </div>
+        <div id="answer" class="col-md-12">
+
+        </div>
+    </div>
+    <div class="center">
+        <div id="hiddenForm" hidden>
+            <h3>Таблица истинности для 1-ой формулы</h3>
+            <table border="1">
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+        <div id="hiddenForm2" hidden>
+            <h3>Таблица истинности для 2-ой формулы</h3>
+            <table border="1">
+                <tbody id="tbody2"></tbody>
+            </table>
+        </div>
+        <div class="output" id="outputCheckTypeFormula"></div>
+    </div>
+</div>
+</body>
+</html>
