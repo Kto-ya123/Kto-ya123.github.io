@@ -172,35 +172,3 @@ function objectToTable(tableG, unicsymbolSizeG){
     }
     return innerHTML;
 }
-function checkEqualsFormula(object1,object2,length,length2){
-    length.sort();
-    length2.sort();
-    if(length.length !== length2.length){
-        return false;
-    }
-    for(let i = 0; i < length.length; i++){
-        if(length[i] !== length2[i]){
-            return false;
-        }
-    }
-
-    for(var i=0; i < Object.keys(object1.table).length;i++) {
-        if (object1.table[i][length[i]]==object2.table[i][length[i]]) {
-            console.log(object1.table[i][Object.keys(object1.table[i])[0]]);
-            continue;
-        }
-        else {
-            return false;
-        }
-    }
-
-    console.log(object1.table.length);
-    for (let i = 0; i < Object.keys(object1.table).length; i++){
-        console.log("last: " + object1.table[i][Object.keys(object1.table[i])[Object.keys(object1.table[i]).length - 1]]);
-        if(object1.table[i][Object.keys(object1.table[i])[Object.keys(object1.table[i]).length - 1]] !==
-            object2.table[i][Object.keys(object2.table[i])[Object.keys(object2.table[i]).length - 1]]){
-            return false;
-        }
-    }
-    return true;
-}

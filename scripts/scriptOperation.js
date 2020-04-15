@@ -4,6 +4,141 @@ let numAnswers = 10;
 var currentAnswer;
 var numError;
 
+let COMPARATOR = new FormulaComparator();
+
+function FormulaComparator() {
+
+    this.compareFormulas = function (formula1, formula2) {
+        let paramFormula1 = collectParams(formula1);
+        let paramFormula2 = collectParams(formula2);
+
+        formula1 = prepareFormula(formula1);
+        formula2 = prepareFormula(formula2);
+
+        let params = unionParams(paramFormula1, paramFormula2);
+
+        let truthMatrix = [];
+        for (let i = 0; i < Math.pow(2, params.length); i++) {
+            let binaryLine = "0".repeat(params.length - i.toString(2).length) + i.toString(2);
+            truthMatrix.push([...binaryLine]);
+        }
+
+        alert(truthMatrix);
+        return areMatrixEquals(prepareMatrixForFormula(formula1, truthMatrix, params), prepareMatrixForFormula(formula2, truthMatrix, params));
+    };
+
+    function prepareMatrixForFormula(formula, truthMatrix, params) {
+        let matrix = [];
+        for (let i = 0; i < truthMatrix.length; i++) {
+            let formulaWithValues = formula;
+            for (let j = 0; j < params.length; j++) {
+                formulaWithValues = formulaWithValues.split(params[j]).join(truthMatrix[i][j]);
+            }
+            try {
+                matrix.push(Boolean(eval(formulaWithValues)));
+            } catch (e) {
+                alert("Formula incorrect. " + e.toString());
+                return;
+            }
+        }
+        return matrix;
+    }
+
+    function areMatrixEquals(matrix1, matrix2) {
+        if (matrix1.length !== matrix2.length) {
+            return false;
+        }
+        for (let i = 0; i < matrix1.length; i++) {
+            if (matrix1[i] !== matrix2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function collectParams(formula) {
+        let params = [];
+        while (formula.match("[A-z]")) {
+            let index = formula.match("[A-z]").index;
+            params.push(formula[index]);
+            formula = formula.substring(index + 1);
+        }
+        return [...new Set(params)];
+    }
+
+    function prepareFormula(formula) {
+        for (let ob of formula.matchAll("~")) {
+            let index = formula.match("~").index;
+            let leftIndexFormula1 = getLeftIndex(index, formula);
+            let subFormula1 = formula.substring(leftIndexFormula1 + 1, index);
+            let rightIndexFormula2 = getRightIndex(index, formula);
+            let subFormula2 = formula.substring(index + 1, rightIndexFormula2);
+
+            formula = formula.substring(0, leftIndexFormula1) +
+                "((!(" + subFormula1 + ")|(" + subFormula2 + "))&" +
+                "((" + subFormula1 + ")|!(" + subFormula2 + ")))" +
+                formula.substring(rightIndexFormula2 + 1, formula.length);
+        }
+
+        for (let ob of formula.matchAll("->")) {
+            let index = formula.match("->").index;
+            let leftIndexFormula1 = getLeftIndex(index, formula);
+            let subFormula1 = formula.substring(leftIndexFormula1 + 1, index);
+            let rightIndexFormula2 = getRightIndex(index, formula);
+            let subFormula2 = formula.substring(index + 2, rightIndexFormula2);
+
+            formula = formula.substring(0, leftIndexFormula1) +
+                "(!(" + subFormula1 + ")|(" + subFormula2 + "))" +
+                formula.substring(rightIndexFormula2 + 1, formula.length);
+        }
+
+        formula = formula.split("&").join("&&");
+        formula = formula.split("|").join("||");
+
+        function getRightIndex(start, formula) {
+            let index = 0;
+            for (let i = start + 1; i < formula.length; i++) {
+                if (formula[i] === ')' && index === 0) {
+                    return i;
+                } else {
+                    if (formula [i] === '(') {
+                        index++;
+                    }
+                    if (formula[i] === ')') {
+                        index--;
+                    }
+                }
+
+            }
+            return formula.length;
+        }
+
+        function getLeftIndex(start, formula) {
+            let index = 0;
+            for (let i = start - 1; i > 0; i--) {
+                if (formula[i] === '(' && index === 0) {
+                    return i;
+                } else {
+                    if (formula [i] === '(') {
+                        index--;
+                    }
+                    if (formula[i] === ')') {
+                        index++;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        return formula;
+    }
+
+    function unionParams(params1, params2) {
+        return [...new Set([...params1, ...params2])];
+    }
+
+}
+
 function newTestTypeFormula() {
  var test = document.getElementById("outputTypeFormula").value;
  var test2 = document.getElementById("outputTypeFormula2").value;
@@ -19,7 +154,8 @@ function newTestTypeFormula() {
 
      tbody.innerHTML = objectToTable(object.table, object.sizeSymbolInFormula);
      tbody2.innerHTML = objectToTable(object2.table, object2.sizeSymbolInFormula);
-     if(checkEqualsFormula(object,object2,getSymbolInFormula(test),getSymbolInFormula(test2))){
+
+     if(COMPARATOR.compareFormulas(test, test2)){
          return 1;
      }
      else{
