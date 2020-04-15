@@ -23,7 +23,6 @@ function FormulaComparator() {
             truthMatrix.push([...binaryLine]);
         }
 
-        alert(truthMatrix);
         return areMatrixEquals(prepareMatrixForFormula(formula1, truthMatrix, params), prepareMatrixForFormula(formula2, truthMatrix, params));
     };
 
@@ -37,7 +36,6 @@ function FormulaComparator() {
             try {
                 matrix.push(Boolean(eval(formulaWithValues)));
             } catch (e) {
-                alert("Formula incorrect. " + e.toString());
                 return;
             }
         }
