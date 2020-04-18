@@ -172,3 +172,13 @@ function objectToTable(tableG, unicsymbolSizeG){
     }
     return innerHTML;
 }
+
+function checkEqualsFormula(object1,object2){
+    for (let i = 0; i < Object.keys(object1.table).length; i++){
+        if(object1.table[i][Object.keys(object1.table[i])[Object.keys(object1.table[i]).length - 1]] !==
+            object2.table[i][Object.keys(object2.table[i])[Object.keys(object2.table[i]).length - 1]]){
+            return false;
+        }
+    }
+    return true;
+}

@@ -17,6 +17,10 @@ function FormulaComparator() {
 
         let params = unionParams(paramFormula1, paramFormula2);
 
+        if(params.length === 0){
+            return checkEqualsFormula(getTableTruth(formula1), getTableTruth(formula2));
+        }
+
         let truthMatrix = [];
         for (let i = 0; i < Math.pow(2, params.length); i++) {
             let binaryLine = "0".repeat(params.length - i.toString(2).length) + i.toString(2);
