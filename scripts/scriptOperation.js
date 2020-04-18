@@ -18,7 +18,7 @@ function FormulaComparator() {
         let params = unionParams(paramFormula1, paramFormula2);
 
         if(params.length === 0){
-            return checkEqualsFormula(getTableTruth(formula1), getTableTruth(formula2));
+            return checkEqualsFormula(getTableTruth(document.getElementById("outputTypeFormula").value), getTableTruth(document.getElementById("outputTypeFormula2").value));
         }
 
         let truthMatrix = [];

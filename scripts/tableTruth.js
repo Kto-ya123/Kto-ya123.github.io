@@ -175,6 +175,8 @@ function objectToTable(tableG, unicsymbolSizeG){
 
 function checkEqualsFormula(object1,object2){
     for (let i = 0; i < Object.keys(object1.table).length; i++){
+        console.log(object1.table[i][Object.keys(object1.table[i])[Object.keys(object1.table[i]).length - 1]]);
+        console.log(object2.table[i][Object.keys(object2.table[i])[Object.keys(object2.table[i]).length - 1]]);
         if(object1.table[i][Object.keys(object1.table[i])[Object.keys(object1.table[i]).length - 1]] !==
             object2.table[i][Object.keys(object2.table[i])[Object.keys(object2.table[i]).length - 1]]){
             return false;
